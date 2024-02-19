@@ -115,5 +115,5 @@ PRINT       { return K_PRINT; }
 <<EOF>>  { return T_EOF ; }
 .        { printf ("Unexpected character\n"); exit (1); }
 
-
+[-|+][0-9]+\.[0-9]+{ return L_Float ; }
 %%
