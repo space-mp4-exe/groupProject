@@ -30,17 +30,6 @@ ALPHA [a-zA-Z]
 \/\/.*$   
 [ \t]+            
 [\n]+              
-"INTEGER" {return K_INTEGER;}
-"FLOAT" {return K_FLOAT;}
-"FOREACH" {return K_FOREACH;}
-"BEGIN" {return K_BEGIN;}
-"END" {return K_END;}
-"REPEAT" {return K_REPEAT;}
-"UNITL" {retun K_UNTIL;}
-"DECLARE" {return K_DECLARE;}
-"IF" {return K_IF;}
-"THEN" {return K_THEN;}
-"PRINT" {return K_PRINT;}
 
 "+"
 	{
