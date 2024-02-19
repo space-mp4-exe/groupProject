@@ -50,6 +50,34 @@ ALPHA [a-zA-Z]
   {
     return OP_LT;
   }
+">"
+  {
+    return OP_GT;
+  }
+"+="
+  {
+    return OP_ADDINC;
+  }
+"++"
+  {
+    return OP_PLUSPLUS;
+  }
+"<="
+  {
+    return OP_LEQ;
+  }
+">="
+  {
+    return OP_GEQ;
+  }
+"=="
+  {
+    return OP_EQ;
+  }
+"~="
+  {
+    return OP_DIFF;
+  }
         
 
 ";"      { 
