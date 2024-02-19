@@ -63,6 +63,18 @@ ALPHA [a-zA-Z]
 "MAIN"   { 
            return K_MAIN; 
          }
+INTEGER     { return K_INTEGER; }
+FLOAT       { return K_FLOAT; }
+FOREACH     { return K_FOREACH; }
+BEGIN       { return K_BEGIN; }
+END         { return K_END; }
+REPEAT      { return K_REPEAT; }
+UNTIL       { return K_UNTIL; }
+WHILE       { return K_WHILE; }
+DECLARE     { return K_DECLARE; }
+IF          { return K_IF; }
+THEN        { return K_THEN; }
+PRINT       { return K_PRINT; }
 
 {DIGIT}+ { 
            return L_INTEGER;
