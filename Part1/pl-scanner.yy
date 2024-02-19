@@ -17,7 +17,6 @@ YY_DECL;
 # define YY_USER_ACTION  {}
 
 
-
 %}
 
 %option yylineno
@@ -31,6 +30,15 @@ ALPHA [a-zA-Z]
 \/\/.*$   
 [ \t]+            
 [\n]+              
+"+"
+	{
+	return OP_ADD;
+	}
+"-"
+	{
+	return OP_SUB;
+	}
+        
 
 ";"      { 
            return ';'; 
