@@ -112,7 +112,7 @@ PRINT       { return K_PRINT; }
 @[a-z_]+ { 
            return T_ID;
          }
-[-|+][0-9]+\.[0-9]+{ return L_Float ; }
+[-+][0-9]+\.[0-9]+ { return L_FLOAT ; }
 
 <<EOF>>  { return T_EOF ; }
 .        { printf ("Unexpected character\n"); exit (1); }
