@@ -108,7 +108,7 @@ PRINT       { return K_PRINT; }
            return L_INTEGER;
          }
 
-{ALPHA}+ { 
+@[a-z_]+ { 
            return T_ID;
          }
 
