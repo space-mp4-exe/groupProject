@@ -40,25 +40,25 @@ ALPHA [a-zA-Z]
 	return OP_SUB;
 	}
 "*"
-  {
-    return OP_MUL;
-  }
+        {
+        return OP_MUL;
+        }
 "/"
-  {
-    return OP_DIV;
-  }
+        {
+        return OP_DIV;
+        }
 "<"
-  {
-    return OP_LT;
-  }
+        {
+        return OP_LT;
+        }
 ">"
-  {
-    return OP_GT;
-  }
+        {
+        return OP_GT;
+        }
 "+="
-  {
-    return OP_ADDINC;
-  }
+        {
+        return OP_ADDINC;
+        }
 "++"
   {
     return OP_PLUSPLUS;
@@ -79,8 +79,6 @@ ALPHA [a-zA-Z]
   {
     return OP_DIFF;
   }
-        
-
 ";"      { 
            return ';'; 
          }
@@ -112,7 +110,7 @@ PRINT       { return K_PRINT; }
 @[a-z_]+ { 
            return T_ID;
          }
-[-+][0-9]+\.[0-9]+ { return L_FLOAT ; }
+[-|+]?[0-9]+\.[0-9]+ { return L_FLOAT ; }
 
 <<EOF>>  { return T_EOF ; }
 .        { printf ("Unexpected character\n"); exit (1); }
