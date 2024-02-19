@@ -38,6 +38,18 @@ ALPHA [a-zA-Z]
 	{
 	return OP_SUB;
 	}
+"*"
+  {
+    return OP_MUL;
+  }
+"/"
+  {
+    return OP_DIV;
+  }
+"<"
+  {
+    return OP_LT;
+  }
         
 
 ";"      { 
