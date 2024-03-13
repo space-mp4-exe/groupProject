@@ -109,8 +109,8 @@ a_fact : varref
     | '(' a_expr ')' 
     ;
 
-varref : 
-  | 
+varref : T_ID
+  | varref'['a_expr']'T_ID
   ;
 
 l_expr : l_expr T_AND l_term
