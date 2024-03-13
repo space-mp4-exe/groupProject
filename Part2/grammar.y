@@ -144,8 +144,9 @@ varlist :
       | 
       ;
 
-expr_list : 
-  | 
+expr_list :
+    a_expr
+  | expr_list ',' a_expr
   ;
 
 %%
