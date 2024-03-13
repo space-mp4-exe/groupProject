@@ -122,8 +122,9 @@ l_term : l_term T_OR l_fact
   ;
 
 l_fact : 
-  | 
-  | 
+        a_expr oprel a_expr
+  | a_expr
+  | '(' l_expr ')'
   ;
 
 
