@@ -10,7 +10,7 @@ SRCS = driver.c lex.yy.c $(PROG).c
 BIN = $(PROG).exe
 
 # If you are working on a Mac, change the below to: CC = clang
-CC = gcc
+CC = clang
 
 all: grammar scanner bin 
 
