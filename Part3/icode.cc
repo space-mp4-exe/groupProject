@@ -1,4 +1,5 @@
 #include "icode.hh"
+#include "symtab.hh"
 
 itab_t * itab_create ()
 {
@@ -131,6 +132,12 @@ int run (itab_t * itab, char * stack, char * static_mem)
           *dst = *src;
         }
         // TASK: Complete case for DTYPE_FLOAT
+        if (op->addr2 == DTYPE_FLOAT)
+        {
+          int *src = (int*)(stack + op->addr3);
+          int *dst = (int*)(stack + op->addr1);
+          *dst = *src;
+        }
         break;
       case OP_LOADCST:
         if (op->addr2 == DTYPE_INT)
