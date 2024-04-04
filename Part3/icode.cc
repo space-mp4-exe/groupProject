@@ -131,7 +131,6 @@ int run (itab_t * itab, char * stack, char * static_mem)
           int * dst = (int*)(stack + op->addr1);
           *dst = *src;
         }
-        // TASK: Complete case for DTYPE_FLOAT
         if (op->addr2 == DTYPE_FLOAT)
         {
           float *src = (float*)(stack + op->addr3);
@@ -146,7 +145,11 @@ int run (itab_t * itab, char * stack, char * static_mem)
           int * dst = (int*)(stack + op->addr1);
           *dst = *src;
         }
-        // TASK: Complete case for DTYPE_FLOAT
+        {
+          float *src = (float*)(static_mem + op->addr3);
+          float *dst = (float*)(stack + op->addr1);
+          *dst = *src;
+        }
         break;
       case OP_STORE:
         if (op->addr2 == DTYPE_INT)
@@ -210,7 +213,7 @@ int run (itab_t * itab, char * stack, char * static_mem)
         break;
       case OP_FSUB:
         {
-          float * left = (flaot*)(stack + op->addr2);
+          float * left = (float*)(stack + op->addr2);
           float * right = (float*)(stack + op->addr3);
           float * res = (float*)(stack + op->addr1);
           *res = *left - *right;
