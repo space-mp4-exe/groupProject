@@ -728,38 +728,27 @@ namespace yy {
         }
         if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
         {
-
-if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
-{
-  res = make_temp(symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
-  itab_instruction_add(itab, OP_FADD, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
-}
-
+          res = make_temp(symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
+          itab_instruction_add(itab, OP_FADD, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
+        }
           // TASK: Modify this semantic action to support both DTYPE_INT and DTYPE_FLOAT.
           // For DTYPE_FLOAT you should generate an OP_FADD instruction.
-        }
         yylhs.value.as < symbol_t* > () = res;
         #ifdef _SMP_DEBUG_
         cout << "On a_expr (1)\n";
         #endif
       }
-#line 747 "simple.cc"
+#line 742 "simple.cc"
     break;
 
   case 14: // a_expr: a_expr T_SUB a_term
-#line 137 "grammar.y"
+#line 132 "grammar.y"
       {
         if (yystack_[2].value.as < symbol_t* > ()->datatype != yystack_[0].value.as < symbol_t* > ()->datatype)
         {
           cout << "Incompatible datatypes\n";
           exit (1);
         }
-
-if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
-{
-  res = make_temp(symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
-  itab_instruction_add(itab, OP_FSUB, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
-}
 
         // TASK: Complete support for OP_SUB and OP_FSUB. See OP_ADD and OP_FADD code above.
 
@@ -769,39 +758,39 @@ if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
           res = make_temp (symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
           itab_instruction_add (itab, OP_SUB, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
         }
+        if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
+        {
+          symbol_t * res;
+          res = make_temp(symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
+          itab_instruction_add(itab, OP_FSUB, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
+        }
         yylhs.value.as < symbol_t* > () = res;
         #ifdef _SMP_DEBUG_
         cout << "On a_expr (2)\n";
         #endif
       }
-#line 778 "simple.cc"
+#line 773 "simple.cc"
     break;
 
   case 15: // a_expr: a_term
-#line 164 "grammar.y"
+#line 159 "grammar.y"
       {
         yylhs.value.as < symbol_t* > () = yystack_[0].value.as < symbol_t* > ();
         #ifdef _SMP_DEBUG_
         cout << "On a_expr (3)\n";
         #endif
       }
-#line 789 "simple.cc"
+#line 784 "simple.cc"
     break;
 
   case 16: // a_term: a_term T_MUL a_fact
-#line 173 "grammar.y"
+#line 168 "grammar.y"
       {
         if (yystack_[2].value.as < symbol_t* > ()->datatype != yystack_[0].value.as < symbol_t* > ()->datatype)
         {
           cout << "Incompatible datatypes\n";
           exit (1);
         }
-
-if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
-{
-  res = make_temp(symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
-  itab_instruction_add(itab, OP_FMUL, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
-}
 
         // TASK: Complete support for OP_MUL and OP_FMUL. See OP_ADD and OP_FADD code above.
         symbol_t * res;
@@ -810,25 +799,24 @@ if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
           res = make_temp (symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
           itab_instruction_add (itab, OP_MUL, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
         }
+        if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
+        {
+          res = make_temp(symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
+          itab_instruction_add(itab, OP_FMUL, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
+        }
         yylhs.value.as < symbol_t* > () = res;
       }
-#line 816 "simple.cc"
+#line 810 "simple.cc"
     break;
 
   case 17: // a_term: a_term T_DIV a_fact
-#line 196 "grammar.y"
+#line 190 "grammar.y"
       {
         if (yystack_[2].value.as < symbol_t* > ()->datatype != yystack_[0].value.as < symbol_t* > ()->datatype)
         {
           cout << "Incompatible datatypes\n";
           exit (1);
         }
-
-if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
-{
-  res = make_temp(symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
-  itab_instruction_add(itab, OP_FDIV, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
-}
 
         // TASK: Complete support for OP_DIV and OP_FDIV. See OP_ADD and OP_FADD code above.
         symbol_t * res;
@@ -837,25 +825,29 @@ if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
           res = make_temp (symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
           itab_instruction_add (itab, OP_DIV, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
         }
+        if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
+        {
+          res = make_temp(symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
+          itab_instruction_add(itab, OP_FDIV, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
+        }
         yylhs.value.as < symbol_t* > () = res;
-        
       }
-#line 844 "simple.cc"
+#line 836 "simple.cc"
     break;
 
   case 18: // a_term: a_fact
-#line 220 "grammar.y"
+#line 212 "grammar.y"
       {
         yylhs.value.as < symbol_t* > () = yystack_[0].value.as < symbol_t* > ();
         #ifdef _SMP_DEBUG_
         cout << "On a_term (3)\n";
         #endif
       }
-#line 855 "simple.cc"
+#line 847 "simple.cc"
     break;
 
   case 19: // a_fact: varref
-#line 229 "grammar.y"
+#line 221 "grammar.y"
       {
         symbol_t * res;
         assert (yystack_[0].value.as < symbol_t* > () && "Did not find variable");
@@ -863,11 +855,11 @@ if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
         itab_instruction_add (itab, OP_LOAD, res->addr, yystack_[0].value.as < symbol_t* > ()->datatype, yystack_[0].value.as < symbol_t* > ()->addr);
         yylhs.value.as < symbol_t* > () = res;
       }
-#line 867 "simple.cc"
+#line 859 "simple.cc"
     break;
 
   case 20: // a_fact: T_INTEGER
-#line 237 "grammar.y"
+#line 229 "grammar.y"
       {
         symbol_t * res;
         res = make_temp (symtab, DTYPE_INT);
@@ -876,11 +868,11 @@ if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
         stptr+=4;
         yylhs.value.as < symbol_t* > () = res;
       }
-#line 880 "simple.cc"
+#line 872 "simple.cc"
     break;
 
   case 21: // a_fact: T_FLOAT
-#line 246 "grammar.y"
+#line 238 "grammar.y"
       { 
         symbol_t * res;
         res = make_temp (symtab, DTYPE_FLOAT);
@@ -889,46 +881,46 @@ if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
         stptr+=4;
         yylhs.value.as < symbol_t* > () = res;
       }
-#line 893 "simple.cc"
+#line 885 "simple.cc"
     break;
 
   case 22: // a_fact: '(' a_expr ')'
-#line 254 "grammar.y"
+#line 246 "grammar.y"
                       { yylhs.value.as < symbol_t* > () = yystack_[1].value.as < symbol_t* > (); }
-#line 899 "simple.cc"
+#line 891 "simple.cc"
     break;
 
   case 23: // a_fact: T_SUB a_fact
-#line 256 "grammar.y"
+#line 248 "grammar.y"
       {
         symbol_t * res;
         res = make_temp (symtab, yystack_[0].value.as < symbol_t* > ()->datatype);
         itab_instruction_add (itab, OP_UMIN, res->addr, yystack_[0].value.as < symbol_t* > ()->datatype, yystack_[0].value.as < symbol_t* > ()->addr);
         yylhs.value.as < symbol_t* > () = res;
       }
-#line 910 "simple.cc"
+#line 902 "simple.cc"
     break;
 
   case 24: // a_fact: T_LITERAL_STR
-#line 263 "grammar.y"
+#line 255 "grammar.y"
       {
         yylhs.value.as < symbol_t* > () = NULL;
       }
-#line 918 "simple.cc"
+#line 910 "simple.cc"
     break;
 
   case 25: // varref: T_ID
-#line 269 "grammar.y"
+#line 261 "grammar.y"
     {
       symbol_t * sym = symbol_find (symtab, yystack_[0].value.as < string > ());
       assert (sym && "Ooops: Did not find variable!");
       yylhs.value.as < symbol_t* > () = sym;
     }
-#line 928 "simple.cc"
+#line 920 "simple.cc"
     break;
 
   case 26: // read: T_READ varlist
-#line 277 "grammar.y"
+#line 269 "grammar.y"
     {
       vector_itersym_t iter;
       int ii = 0;
@@ -941,11 +933,11 @@ if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
         itab_instruction_add (itab, OP_READ, (*iter)->addr, (*iter)->datatype, NOARG);
       }
     }
-#line 945 "simple.cc"
+#line 937 "simple.cc"
     break;
 
   case 27: // write: T_WRITE expr_list
-#line 292 "grammar.y"
+#line 284 "grammar.y"
     {
       vector_itersym_t iter;
       int ii = 0;
@@ -958,45 +950,45 @@ if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
         itab_instruction_add (itab, OP_WRITE, (*iter)->addr, (*iter)->datatype, NOARG);
       }
     }
-#line 962 "simple.cc"
+#line 954 "simple.cc"
     break;
 
   case 28: // varlist: varlist T_COMMA varref
-#line 306 "grammar.y"
+#line 298 "grammar.y"
                                   { yystack_[2].value.as < vector<symbol_t*>  > ().push_back (yystack_[0].value.as < symbol_t* > ()); yylhs.value.as < vector<symbol_t*>  > () = yystack_[2].value.as < vector<symbol_t*>  > (); }
-#line 968 "simple.cc"
+#line 960 "simple.cc"
     break;
 
   case 29: // varlist: varref
-#line 307 "grammar.y"
+#line 299 "grammar.y"
                { yylhs.value.as < vector<symbol_t*>  > ().push_back (yystack_[0].value.as < symbol_t* > ()); }
-#line 974 "simple.cc"
+#line 966 "simple.cc"
     break;
 
   case 30: // expr_list: expr_list T_COMMA a_expr
-#line 311 "grammar.y"
+#line 303 "grammar.y"
     { 
       yystack_[2].value.as < vector<symbol_t*>  > ().push_back (yystack_[0].value.as < symbol_t* > ()); yylhs.value.as < vector<symbol_t*>  > () = yystack_[2].value.as < vector<symbol_t*>  > (); 
       #ifdef _SMP_DEBUG_
       cout << "In expr_list (1)\n";
       #endif
     }
-#line 985 "simple.cc"
+#line 977 "simple.cc"
     break;
 
   case 31: // expr_list: a_expr
-#line 318 "grammar.y"
+#line 310 "grammar.y"
     { 
       yylhs.value.as < vector<symbol_t*>  > ().push_back (yystack_[0].value.as < symbol_t* > ()); 
       #ifdef _SMP_DEBUG_
       cout << "In expr_list (2)\n";
       #endif
     }
-#line 996 "simple.cc"
+#line 988 "simple.cc"
     break;
 
 
-#line 1000 "simple.cc"
+#line 992 "simple.cc"
 
             default:
               break;
@@ -1454,9 +1446,9 @@ if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
   simple_parser::yyrline_[] =
   {
        0,    73,    73,    76,    77,    80,    81,    82,    83,    86,
-      93,   102,   103,   106,   136,   163,   172,   195,   219,   228,
-     236,   245,   254,   255,   262,   268,   276,   291,   306,   307,
-     310,   317
+      93,   102,   103,   106,   131,   158,   167,   189,   211,   220,
+     228,   237,   246,   247,   254,   260,   268,   283,   298,   299,
+     302,   309
   };
 
   void
@@ -1488,9 +1480,9 @@ if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
 
 
 } // yy
-#line 1492 "simple.cc"
+#line 1484 "simple.cc"
 
-#line 326 "grammar.y"
+#line 318 "grammar.y"
 
 
 void yy::simple_parser::error (const yy::location & l, const std::string & s) {

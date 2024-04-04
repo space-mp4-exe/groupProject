@@ -154,7 +154,7 @@ int run (itab_t * itab, char * stack, char * static_mem)
       case OP_STORE:
         if (op->addr2 == DTYPE_INT) {
         int *src = (int*)(stack + op->addr3);
-        int *dst = (int*)(stack + op->addr1);
+        int * = (int*)(stack + op->addr1);
         *dst = *src;
 
         // Existing code for handling integers
