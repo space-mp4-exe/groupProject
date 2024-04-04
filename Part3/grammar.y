@@ -143,6 +143,7 @@ if ($1->datatype == DTYPE_FLOAT)
 
 if ($1->datatype == DTYPE_FLOAT)
 {
+  symbol_t * res;
   res = make_temp(symtab, $1->datatype);
   itab_instruction_add(itab, OP_FSUB, res->addr, $1->addr, $3->addr);
 }
@@ -179,6 +180,7 @@ a_term : a_term T_MUL a_fact
 
 if ($1->datatype == DTYPE_FLOAT)
 {
+  symbol_t * res;
   res = make_temp(symtab, $1->datatype);
   itab_instruction_add(itab, OP_FMUL, res->addr, $1->addr, $3->addr);
 }
@@ -202,6 +204,7 @@ if ($1->datatype == DTYPE_FLOAT)
 
 if ($1->datatype == DTYPE_FLOAT)
 {
+  symbol_t * res;
   res = make_temp(symtab, $1->datatype);
   itab_instruction_add(itab, OP_FDIV, res->addr, $1->addr, $3->addr);
 }
