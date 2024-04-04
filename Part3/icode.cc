@@ -133,8 +133,8 @@ int run (itab_t * itab, char * stack, char * static_mem)
         }
         if (op->addr2 == DTYPE_FLOAT)
         {
-          float *src = (float*)(stack + op->addr3);
-          float *dst = (float*)(stack + op->addr1);
+          float * src = (float*)(stack + op->addr3);
+          float * dst = (float*)(stack + op->addr1);
           *dst = *src;
         }
         break;
@@ -145,16 +145,17 @@ int run (itab_t * itab, char * stack, char * static_mem)
           int * dst = (int*)(stack + op->addr1);
           *dst = *src;
         }
+        if (op->addr2 == DTYPE_FLOAT) 
         {
-          float *src = (float*)(static_mem + op->addr3);
-          float *dst = (float*)(stack + op->addr1);
+          float * src = (float*)(static_mem + op->addr3);
+          float * dst = (float*)(stack + op->addr1);
           *dst = *src;
         }
         break;
       case OP_STORE:
         if (op->addr2 == DTYPE_INT) {
-        int *src = (int*)(stack + op->addr3);
-        int * = (int*)(stack + op->addr1);
+        int * src = (int*)(stack + op->addr3);
+        int * dst= (int*)(stack + op->addr1);
         *dst = *src;
 
         // Existing code for handling integers
