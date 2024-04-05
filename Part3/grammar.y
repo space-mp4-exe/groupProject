@@ -146,7 +146,6 @@ a_expr : a_expr T_ADD a_term
         }
         if ($1->datatype == DTYPE_FLOAT)
         {
-          symbol_t * res;
           res = make_temp(symtab, $1->datatype);
           itab_instruction_add(itab, OP_FSUB, res->addr, $1->addr, $3->addr);
         }

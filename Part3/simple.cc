@@ -1,8 +1,8 @@
-// A Bison parser, made by GNU Bison 3.8.2.
+// A Bison parser, made by GNU Bison 3.7.4.
 
 // Skeleton implementation for Bison LALR(1) parsers in C++
 
-// Copyright (C) 2002-2015, 2018-2021 Free Software Foundation, Inc.
+// Copyright (C) 2002-2015, 2018-2020 Free Software Foundation, Inc.
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // As a special exception, you may create a larger work that contains
 // part or all of the Bison parser skeleton and distribute that work
@@ -136,7 +136,7 @@ extern yy::location loc;
 #else // !YYDEBUG
 
 # define YYCDEBUG if (false) std::cerr
-# define YY_SYMBOL_PRINT(Title, Symbol)  YY_USE (Symbol)
+# define YY_SYMBOL_PRINT(Title, Symbol)  YYUSE (Symbol)
 # define YY_REDUCE_PRINT(Rule)           static_cast<void> (0)
 # define YY_STACK_PRINT()                static_cast<void> (0)
 
@@ -172,9 +172,9 @@ namespace yy {
   simple_parser::syntax_error::~syntax_error () YY_NOEXCEPT YY_NOTHROW
   {}
 
-  /*---------.
-  | symbol.  |
-  `---------*/
+  /*---------------.
+  | symbol kinds.  |
+  `---------------*/
 
 
 
@@ -398,7 +398,7 @@ namespace yy {
   simple_parser::yy_print_ (std::ostream& yyo, const basic_symbol<Base>& yysym) const
   {
     std::ostream& yyoutput = yyo;
-    YY_USE (yyoutput);
+    YYUSE (yyoutput);
     if (yysym.empty ())
       yyo << "empty symbol";
     else
@@ -407,7 +407,7 @@ namespace yy {
         yyo << (yykind < YYNTOKENS ? "token" : "nterm")
             << ' ' << yysym.name () << " ("
             << yysym.location << ": ";
-        YY_USE (yykind);
+        YYUSE (yykind);
         yyo << ')';
       }
   }
@@ -433,7 +433,7 @@ namespace yy {
   }
 
   void
-  simple_parser::yypop_ (int n) YY_NOEXCEPT
+  simple_parser::yypop_ (int n)
   {
     yystack_.pop (n);
   }
@@ -476,13 +476,13 @@ namespace yy {
   }
 
   bool
-  simple_parser::yy_pact_value_is_default_ (int yyvalue) YY_NOEXCEPT
+  simple_parser::yy_pact_value_is_default_ (int yyvalue)
   {
     return yyvalue == yypact_ninf_;
   }
 
   bool
-  simple_parser::yy_table_value_is_error_ (int yyvalue) YY_NOEXCEPT
+  simple_parser::yy_table_value_is_error_ (int yyvalue)
   {
     return yyvalue == yytable_ninf_;
   }
@@ -760,7 +760,6 @@ namespace yy {
         }
         if (yystack_[2].value.as < symbol_t* > ()->datatype == DTYPE_FLOAT)
         {
-          symbol_t * res;
           res = make_temp(symtab, yystack_[2].value.as < symbol_t* > ()->datatype);
           itab_instruction_add(itab, OP_FSUB, res->addr, yystack_[2].value.as < symbol_t* > ()->addr, yystack_[0].value.as < symbol_t* > ()->addr);
         }
@@ -769,22 +768,22 @@ namespace yy {
         cout << "On a_expr (2)\n";
         #endif
       }
-#line 773 "simple.cc"
+#line 772 "simple.cc"
     break;
 
   case 15: // a_expr: a_term
-#line 159 "grammar.y"
+#line 158 "grammar.y"
       {
         yylhs.value.as < symbol_t* > () = yystack_[0].value.as < symbol_t* > ();
         #ifdef _SMP_DEBUG_
         cout << "On a_expr (3)\n";
         #endif
       }
-#line 784 "simple.cc"
+#line 783 "simple.cc"
     break;
 
   case 16: // a_term: a_term T_MUL a_fact
-#line 168 "grammar.y"
+#line 167 "grammar.y"
       {
         if (yystack_[2].value.as < symbol_t* > ()->datatype != yystack_[0].value.as < symbol_t* > ()->datatype)
         {
@@ -806,11 +805,11 @@ namespace yy {
         }
         yylhs.value.as < symbol_t* > () = res;
       }
-#line 810 "simple.cc"
+#line 809 "simple.cc"
     break;
 
   case 17: // a_term: a_term T_DIV a_fact
-#line 190 "grammar.y"
+#line 189 "grammar.y"
       {
         if (yystack_[2].value.as < symbol_t* > ()->datatype != yystack_[0].value.as < symbol_t* > ()->datatype)
         {
@@ -832,22 +831,22 @@ namespace yy {
         }
         yylhs.value.as < symbol_t* > () = res;
       }
-#line 836 "simple.cc"
+#line 835 "simple.cc"
     break;
 
   case 18: // a_term: a_fact
-#line 212 "grammar.y"
+#line 211 "grammar.y"
       {
         yylhs.value.as < symbol_t* > () = yystack_[0].value.as < symbol_t* > ();
         #ifdef _SMP_DEBUG_
         cout << "On a_term (3)\n";
         #endif
       }
-#line 847 "simple.cc"
+#line 846 "simple.cc"
     break;
 
   case 19: // a_fact: varref
-#line 221 "grammar.y"
+#line 220 "grammar.y"
       {
         symbol_t * res;
         assert (yystack_[0].value.as < symbol_t* > () && "Did not find variable");
@@ -855,11 +854,11 @@ namespace yy {
         itab_instruction_add (itab, OP_LOAD, res->addr, yystack_[0].value.as < symbol_t* > ()->datatype, yystack_[0].value.as < symbol_t* > ()->addr);
         yylhs.value.as < symbol_t* > () = res;
       }
-#line 859 "simple.cc"
+#line 858 "simple.cc"
     break;
 
   case 20: // a_fact: T_INTEGER
-#line 229 "grammar.y"
+#line 228 "grammar.y"
       {
         symbol_t * res;
         res = make_temp (symtab, DTYPE_INT);
@@ -868,11 +867,11 @@ namespace yy {
         stptr+=4;
         yylhs.value.as < symbol_t* > () = res;
       }
-#line 872 "simple.cc"
+#line 871 "simple.cc"
     break;
 
   case 21: // a_fact: T_FLOAT
-#line 238 "grammar.y"
+#line 237 "grammar.y"
       { 
         symbol_t * res;
         res = make_temp (symtab, DTYPE_FLOAT);
@@ -881,46 +880,46 @@ namespace yy {
         stptr+=4;
         yylhs.value.as < symbol_t* > () = res;
       }
-#line 885 "simple.cc"
+#line 884 "simple.cc"
     break;
 
   case 22: // a_fact: '(' a_expr ')'
-#line 246 "grammar.y"
+#line 245 "grammar.y"
                       { yylhs.value.as < symbol_t* > () = yystack_[1].value.as < symbol_t* > (); }
-#line 891 "simple.cc"
+#line 890 "simple.cc"
     break;
 
   case 23: // a_fact: T_SUB a_fact
-#line 248 "grammar.y"
+#line 247 "grammar.y"
       {
         symbol_t * res;
         res = make_temp (symtab, yystack_[0].value.as < symbol_t* > ()->datatype);
         itab_instruction_add (itab, OP_UMIN, res->addr, yystack_[0].value.as < symbol_t* > ()->datatype, yystack_[0].value.as < symbol_t* > ()->addr);
         yylhs.value.as < symbol_t* > () = res;
       }
-#line 902 "simple.cc"
+#line 901 "simple.cc"
     break;
 
   case 24: // a_fact: T_LITERAL_STR
-#line 255 "grammar.y"
+#line 254 "grammar.y"
       {
         yylhs.value.as < symbol_t* > () = NULL;
       }
-#line 910 "simple.cc"
+#line 909 "simple.cc"
     break;
 
   case 25: // varref: T_ID
-#line 261 "grammar.y"
+#line 260 "grammar.y"
     {
       symbol_t * sym = symbol_find (symtab, yystack_[0].value.as < string > ());
       assert (sym && "Ooops: Did not find variable!");
       yylhs.value.as < symbol_t* > () = sym;
     }
-#line 920 "simple.cc"
+#line 919 "simple.cc"
     break;
 
   case 26: // read: T_READ varlist
-#line 269 "grammar.y"
+#line 268 "grammar.y"
     {
       vector_itersym_t iter;
       int ii = 0;
@@ -933,11 +932,11 @@ namespace yy {
         itab_instruction_add (itab, OP_READ, (*iter)->addr, (*iter)->datatype, NOARG);
       }
     }
-#line 937 "simple.cc"
+#line 936 "simple.cc"
     break;
 
   case 27: // write: T_WRITE expr_list
-#line 284 "grammar.y"
+#line 283 "grammar.y"
     {
       vector_itersym_t iter;
       int ii = 0;
@@ -950,45 +949,45 @@ namespace yy {
         itab_instruction_add (itab, OP_WRITE, (*iter)->addr, (*iter)->datatype, NOARG);
       }
     }
-#line 954 "simple.cc"
+#line 953 "simple.cc"
     break;
 
   case 28: // varlist: varlist T_COMMA varref
-#line 298 "grammar.y"
+#line 297 "grammar.y"
                                   { yystack_[2].value.as < vector<symbol_t*>  > ().push_back (yystack_[0].value.as < symbol_t* > ()); yylhs.value.as < vector<symbol_t*>  > () = yystack_[2].value.as < vector<symbol_t*>  > (); }
-#line 960 "simple.cc"
+#line 959 "simple.cc"
     break;
 
   case 29: // varlist: varref
-#line 299 "grammar.y"
+#line 298 "grammar.y"
                { yylhs.value.as < vector<symbol_t*>  > ().push_back (yystack_[0].value.as < symbol_t* > ()); }
-#line 966 "simple.cc"
+#line 965 "simple.cc"
     break;
 
   case 30: // expr_list: expr_list T_COMMA a_expr
-#line 303 "grammar.y"
+#line 302 "grammar.y"
     { 
       yystack_[2].value.as < vector<symbol_t*>  > ().push_back (yystack_[0].value.as < symbol_t* > ()); yylhs.value.as < vector<symbol_t*>  > () = yystack_[2].value.as < vector<symbol_t*>  > (); 
       #ifdef _SMP_DEBUG_
       cout << "In expr_list (1)\n";
       #endif
     }
-#line 977 "simple.cc"
+#line 976 "simple.cc"
     break;
 
   case 31: // expr_list: a_expr
-#line 310 "grammar.y"
+#line 309 "grammar.y"
     { 
       yylhs.value.as < vector<symbol_t*>  > ().push_back (yystack_[0].value.as < symbol_t* > ()); 
       #ifdef _SMP_DEBUG_
       cout << "In expr_list (2)\n";
       #endif
     }
-#line 988 "simple.cc"
+#line 987 "simple.cc"
     break;
 
 
-#line 992 "simple.cc"
+#line 991 "simple.cc"
 
             default:
               break;
@@ -1226,16 +1225,16 @@ namespace yy {
     // Actual number of expected tokens
     int yycount = 0;
 
-    const int yyn = yypact_[+yyparser_.yystack_[0].state];
+    int yyn = yypact_[+yyparser_.yystack_[0].state];
     if (!yy_pact_value_is_default_ (yyn))
       {
         /* Start YYX at -YYN if negative to avoid negative indexes in
            YYCHECK.  In other words, skip the first -YYN actions for
            this state because they are default actions.  */
-        const int yyxbegin = yyn < 0 ? -yyn : 0;
+        int yyxbegin = yyn < 0 ? -yyn : 0;
         // Stay within bounds of both yycheck and yytname.
-        const int yychecklim = yylast_ - yyn + 1;
-        const int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
+        int yychecklim = yylast_ - yyn + 1;
+        int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
         for (int yyx = yyxbegin; yyx < yyxend; ++yyx)
           if (yycheck_[yyx + yyn] == yyx && yyx != symbol_kind::S_YYerror
               && !yy_table_value_is_error_ (yytable_[yyx + yyn]))
@@ -1253,9 +1252,6 @@ namespace yy {
       yyarg[0] = symbol_kind::S_YYEMPTY;
     return yycount;
   }
-
-
-
 
 
 
@@ -1374,7 +1370,7 @@ namespace yy {
   const signed char
   simple_parser::yydefgoto_[] =
   {
-       0,     6,     7,     8,     9,    10,    11,    22,    23,    24,
+      -1,     6,     7,     8,     9,    10,    11,    22,    23,    24,
       25,    13,    14,    16,    26
   };
 
@@ -1446,9 +1442,9 @@ namespace yy {
   simple_parser::yyrline_[] =
   {
        0,    73,    73,    76,    77,    80,    81,    82,    83,    86,
-      93,   102,   103,   106,   131,   158,   167,   189,   211,   220,
-     228,   237,   246,   247,   254,   260,   268,   283,   298,   299,
-     302,   309
+      93,   102,   103,   106,   131,   157,   166,   188,   210,   219,
+     227,   236,   245,   246,   253,   259,   267,   282,   297,   298,
+     301,   308
   };
 
   void
@@ -1480,9 +1476,9 @@ namespace yy {
 
 
 } // yy
-#line 1484 "simple.cc"
+#line 1480 "simple.cc"
 
-#line 318 "grammar.y"
+#line 317 "grammar.y"
 
 
 void yy::simple_parser::error (const yy::location & l, const std::string & s) {

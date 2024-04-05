@@ -126,7 +126,7 @@ Nonterminals, with rules where they appear
 
 State 0
 
-    0 $accept: • program T_EOF
+    0 $accept: . program T_EOF
 
     T_DT_INT    shift, and go to state 1
     T_DT_FLOAT  shift, and go to state 2
@@ -147,21 +147,21 @@ State 0
 
 State 1
 
-   10 datatype: T_DT_INT •
+   10 datatype: T_DT_INT .
 
     $default  reduce using rule 10 (datatype)
 
 
 State 2
 
-   11 datatype: T_DT_FLOAT •
+   11 datatype: T_DT_FLOAT .
 
     $default  reduce using rule 11 (datatype)
 
 
 State 3
 
-   25 read: T_READ • varlist
+   25 read: T_READ . varlist
 
     T_ID  shift, and go to state 5
 
@@ -171,7 +171,7 @@ State 3
 
 State 4
 
-   26 write: T_WRITE • expr_list
+   26 write: T_WRITE . expr_list
 
     T_SUB          shift, and go to state 17
     T_LITERAL_STR  shift, and go to state 18
@@ -189,86 +189,86 @@ State 4
 
 State 5
 
-   24 varref: T_ID •
+   24 varref: T_ID .
 
     $default  reduce using rule 24 (varref)
 
 
 State 6
 
-    0 $accept: program • T_EOF
+    0 $accept: program . T_EOF
 
     T_EOF  shift, and go to state 27
 
 
 State 7
 
-    1 program: stmt_list • T_SEMICOLON
-    2 stmt_list: stmt_list • T_SEMICOLON stmt
+    1 program: stmt_list . T_SEMICOLON
+    2 stmt_list: stmt_list . T_SEMICOLON stmt
 
     T_SEMICOLON  shift, and go to state 28
 
 
 State 8
 
-    3 stmt_list: stmt •
+    3 stmt_list: stmt .
 
     $default  reduce using rule 3 (stmt_list)
 
 
 State 9
 
-    4 stmt: assignment •
+    4 stmt: assignment .
 
     $default  reduce using rule 4 (stmt)
 
 
 State 10
 
-    7 stmt: declaration •
+    7 stmt: declaration .
 
     $default  reduce using rule 7 (stmt)
 
 
 State 11
 
-    9 declaration: datatype • T_ID
+    9 declaration: datatype . T_ID
 
     T_ID  shift, and go to state 29
 
 
 State 12
 
-    8 assignment: varref • T_ASSIGN a_expr
+    8 assignment: varref . T_ASSIGN a_expr
 
     T_ASSIGN  shift, and go to state 30
 
 
 State 13
 
-    5 stmt: read •
+    5 stmt: read .
 
     $default  reduce using rule 5 (stmt)
 
 
 State 14
 
-    6 stmt: write •
+    6 stmt: write .
 
     $default  reduce using rule 6 (stmt)
 
 
 State 15
 
-   28 varlist: varref •
+   28 varlist: varref .
 
     $default  reduce using rule 28 (varlist)
 
 
 State 16
 
-   25 read: T_READ varlist •
-   27 varlist: varlist • T_COMMA varref
+   25 read: T_READ varlist .
+   27 varlist: varlist . T_COMMA varref
 
     T_COMMA  shift, and go to state 31
 
@@ -277,7 +277,7 @@ State 16
 
 State 17
 
-   22 a_fact: T_SUB • a_fact
+   22 a_fact: T_SUB . a_fact
 
     T_SUB          shift, and go to state 17
     T_LITERAL_STR  shift, and go to state 18
@@ -292,28 +292,28 @@ State 17
 
 State 18
 
-   23 a_fact: T_LITERAL_STR •
+   23 a_fact: T_LITERAL_STR .
 
     $default  reduce using rule 23 (a_fact)
 
 
 State 19
 
-   19 a_fact: T_INTEGER •
+   19 a_fact: T_INTEGER .
 
     $default  reduce using rule 19 (a_fact)
 
 
 State 20
 
-   20 a_fact: T_FLOAT •
+   20 a_fact: T_FLOAT .
 
     $default  reduce using rule 20 (a_fact)
 
 
 State 21
 
-   21 a_fact: '(' • a_expr ')'
+   21 a_fact: '(' . a_expr ')'
 
     T_SUB          shift, and go to state 17
     T_LITERAL_STR  shift, and go to state 18
@@ -330,9 +330,9 @@ State 21
 
 State 22
 
-   12 a_expr: a_expr • T_ADD a_term
-   13       | a_expr • T_SUB a_term
-   30 expr_list: a_expr •
+   12 a_expr: a_expr . T_ADD a_term
+   13       | a_expr . T_SUB a_term
+   30 expr_list: a_expr .
 
     T_ADD  shift, and go to state 34
     T_SUB  shift, and go to state 35
@@ -342,9 +342,9 @@ State 22
 
 State 23
 
-   14 a_expr: a_term •
-   15 a_term: a_term • T_MUL a_fact
-   16       | a_term • T_DIV a_fact
+   14 a_expr: a_term .
+   15 a_term: a_term . T_MUL a_fact
+   16       | a_term . T_DIV a_fact
 
     T_MUL  shift, and go to state 36
     T_DIV  shift, and go to state 37
@@ -354,22 +354,22 @@ State 23
 
 State 24
 
-   17 a_term: a_fact •
+   17 a_term: a_fact .
 
     $default  reduce using rule 17 (a_term)
 
 
 State 25
 
-   18 a_fact: varref •
+   18 a_fact: varref .
 
     $default  reduce using rule 18 (a_fact)
 
 
 State 26
 
-   26 write: T_WRITE expr_list •
-   29 expr_list: expr_list • T_COMMA a_expr
+   26 write: T_WRITE expr_list .
+   29 expr_list: expr_list . T_COMMA a_expr
 
     T_COMMA  shift, and go to state 38
 
@@ -378,15 +378,15 @@ State 26
 
 State 27
 
-    0 $accept: program T_EOF •
+    0 $accept: program T_EOF .
 
     $default  accept
 
 
 State 28
 
-    1 program: stmt_list T_SEMICOLON •
-    2 stmt_list: stmt_list T_SEMICOLON • stmt
+    1 program: stmt_list T_SEMICOLON .
+    2 stmt_list: stmt_list T_SEMICOLON . stmt
 
     T_DT_INT    shift, and go to state 1
     T_DT_FLOAT  shift, and go to state 2
@@ -407,14 +407,14 @@ State 28
 
 State 29
 
-    9 declaration: datatype T_ID •
+    9 declaration: datatype T_ID .
 
     $default  reduce using rule 9 (declaration)
 
 
 State 30
 
-    8 assignment: varref T_ASSIGN • a_expr
+    8 assignment: varref T_ASSIGN . a_expr
 
     T_SUB          shift, and go to state 17
     T_LITERAL_STR  shift, and go to state 18
@@ -431,7 +431,7 @@ State 30
 
 State 31
 
-   27 varlist: varlist T_COMMA • varref
+   27 varlist: varlist T_COMMA . varref
 
     T_ID  shift, and go to state 5
 
@@ -440,16 +440,16 @@ State 31
 
 State 32
 
-   22 a_fact: T_SUB a_fact •
+   22 a_fact: T_SUB a_fact .
 
     $default  reduce using rule 22 (a_fact)
 
 
 State 33
 
-   12 a_expr: a_expr • T_ADD a_term
-   13       | a_expr • T_SUB a_term
-   21 a_fact: '(' a_expr • ')'
+   12 a_expr: a_expr . T_ADD a_term
+   13       | a_expr . T_SUB a_term
+   21 a_fact: '(' a_expr . ')'
 
     T_ADD  shift, and go to state 34
     T_SUB  shift, and go to state 35
@@ -458,7 +458,7 @@ State 33
 
 State 34
 
-   12 a_expr: a_expr T_ADD • a_term
+   12 a_expr: a_expr T_ADD . a_term
 
     T_SUB          shift, and go to state 17
     T_LITERAL_STR  shift, and go to state 18
@@ -474,7 +474,7 @@ State 34
 
 State 35
 
-   13 a_expr: a_expr T_SUB • a_term
+   13 a_expr: a_expr T_SUB . a_term
 
     T_SUB          shift, and go to state 17
     T_LITERAL_STR  shift, and go to state 18
@@ -490,7 +490,7 @@ State 35
 
 State 36
 
-   15 a_term: a_term T_MUL • a_fact
+   15 a_term: a_term T_MUL . a_fact
 
     T_SUB          shift, and go to state 17
     T_LITERAL_STR  shift, and go to state 18
@@ -505,7 +505,7 @@ State 36
 
 State 37
 
-   16 a_term: a_term T_DIV • a_fact
+   16 a_term: a_term T_DIV . a_fact
 
     T_SUB          shift, and go to state 17
     T_LITERAL_STR  shift, and go to state 18
@@ -520,7 +520,7 @@ State 37
 
 State 38
 
-   29 expr_list: expr_list T_COMMA • a_expr
+   29 expr_list: expr_list T_COMMA . a_expr
 
     T_SUB          shift, and go to state 17
     T_LITERAL_STR  shift, and go to state 18
@@ -537,16 +537,16 @@ State 38
 
 State 39
 
-    2 stmt_list: stmt_list T_SEMICOLON stmt •
+    2 stmt_list: stmt_list T_SEMICOLON stmt .
 
     $default  reduce using rule 2 (stmt_list)
 
 
 State 40
 
-    8 assignment: varref T_ASSIGN a_expr •
-   12 a_expr: a_expr • T_ADD a_term
-   13       | a_expr • T_SUB a_term
+    8 assignment: varref T_ASSIGN a_expr .
+   12 a_expr: a_expr . T_ADD a_term
+   13       | a_expr . T_SUB a_term
 
     T_ADD  shift, and go to state 34
     T_SUB  shift, and go to state 35
@@ -556,23 +556,23 @@ State 40
 
 State 41
 
-   27 varlist: varlist T_COMMA varref •
+   27 varlist: varlist T_COMMA varref .
 
     $default  reduce using rule 27 (varlist)
 
 
 State 42
 
-   21 a_fact: '(' a_expr ')' •
+   21 a_fact: '(' a_expr ')' .
 
     $default  reduce using rule 21 (a_fact)
 
 
 State 43
 
-   12 a_expr: a_expr T_ADD a_term •
-   15 a_term: a_term • T_MUL a_fact
-   16       | a_term • T_DIV a_fact
+   12 a_expr: a_expr T_ADD a_term .
+   15 a_term: a_term . T_MUL a_fact
+   16       | a_term . T_DIV a_fact
 
     T_MUL  shift, and go to state 36
     T_DIV  shift, and go to state 37
@@ -582,9 +582,9 @@ State 43
 
 State 44
 
-   13 a_expr: a_expr T_SUB a_term •
-   15 a_term: a_term • T_MUL a_fact
-   16       | a_term • T_DIV a_fact
+   13 a_expr: a_expr T_SUB a_term .
+   15 a_term: a_term . T_MUL a_fact
+   16       | a_term . T_DIV a_fact
 
     T_MUL  shift, and go to state 36
     T_DIV  shift, and go to state 37
@@ -594,23 +594,23 @@ State 44
 
 State 45
 
-   15 a_term: a_term T_MUL a_fact •
+   15 a_term: a_term T_MUL a_fact .
 
     $default  reduce using rule 15 (a_term)
 
 
 State 46
 
-   16 a_term: a_term T_DIV a_fact •
+   16 a_term: a_term T_DIV a_fact .
 
     $default  reduce using rule 16 (a_term)
 
 
 State 47
 
-   12 a_expr: a_expr • T_ADD a_term
-   13       | a_expr • T_SUB a_term
-   29 expr_list: expr_list T_COMMA a_expr •
+   12 a_expr: a_expr . T_ADD a_term
+   13       | a_expr . T_SUB a_term
+   29 expr_list: expr_list T_COMMA a_expr .
 
     T_ADD  shift, and go to state 34
     T_SUB  shift, and go to state 35
