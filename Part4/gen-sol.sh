@@ -17,6 +17,6 @@ for tc in `ls $inputdir/*.smp`; do
   echo "#############################################################################"
   echo "Showing input test case: $tc"
   cat $tc
-  ./simple.exe < $tc
+  ./simple.exe < $tc > $tc.out
 done
 
