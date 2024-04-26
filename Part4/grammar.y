@@ -169,44 +169,40 @@ construct_repeat:
     ;
 
 construct_if :
-    T_IF 
-    T_LPAR 
-    l_expr 
-    T_RPAR 
+    T_IF T_LPAR l_expr T_RPAR
     {
-      // First semantic action
-      // DEFINE_ME = change to proper values.
-      // TBDARG = Should modify the corresponding address (.addr#) in a later semantic action.
-      // NOARG = No need to change.
-      itab_instruction_add (itab, DEFINE_ME, DEFINE_ME, NOARG, TBDARG);
-      @$.begin.line = DEFINE_ME; // INSTRUCTION_NEXT or INSTRUCTION_LAST
+        // First semantic action: generate jump to skip 'then' block if condition is false
+        itab_instruction_add(itab, OP_JZ, $3->addr, UNUSED_ARG, TBD_ARG); // Address to be fixed
+        @$.begin.line = INSTRUCTION_LAST;
     }
-    stmt 
+    stmt
     {
-      // Second semantic action
-      itab_instruction_add (itab, OP_JMP, NOARG, NOARG, TBDARG);
-      @$.begin.line =  DEFINE_ME; // INSTRUCTION_NEXT or INSTRUCTION_LAST
+        // Second semantic action: unconditional jump to skip 'else'
+        itab_instruction_add(itab, OP_JMP, NOARG, NOARG, TBD_ARG); // Address to be fixed
+        @6.begin.line = INSTRUCTION_NEXT;  // Capture this instruction's index for later
 
-      int jmp_entry = @5.begin.line;
-      itab->tab[jmp_entry]->addr3 = DEFINE_ME; // INSTRUCTION_NEXT or INSTRUCTION_LAST
+        // Set the jump destination for the conditional jump at the start of 'then'
+        itab->tab[@3.begin.line]->addr3 = INSTRUCTION_NEXT;
     }
     construct_else
     {
-      // Third semantic action
-      int jmp_entry = @7.begin.line;
-      itab->tab[jmp_entry]->addr3 = DEFINE_ME; // INSTRUCTION_NEXT or INSTRUCTION_LAST
+        // Third semantic action: Set target for unconditional jump
+        itab->tab[@6.begin.line]->addr3 = INSTRUCTION_NEXT;
     }
     ;
 
 construct_else :
-      T_ELSE 
-      { 
+    T_ELSE stmt
+    {
+        // Simply start else block, setting up location context for final jump address
         @$.begin.line = INSTRUCTION_NEXT;
-      }
-      stmt 
-    | 
-
+    }
+    | // Empty else or no else at all
+    {
+        @$.begin.line = INSTRUCTION_NEXT;
+    }
     ;
+
 
 
 l_expr : a_expr op_rel a_expr
