@@ -222,54 +222,43 @@ op_rel  : T_LT { $$ = OP_LT; }
         ;
 
 assignment : T_ID arr_index T_ASSIGN a_expr 
-    {
-      symbol_t * sym = symbol_find (symtab, $1);
-      assert (sym && "Ooops: Did not find variable!");
+{
+  symbol_t * sym = symbol_find (symtab, $1);
+  assert (sym && "Ooops: Did not find variable!");
 
-      symbol_t * src_temp = $4;
-      symbol_t * temp = NULL;
+  symbol_t * src_temp = $4;
+  symbol_t * temp = NULL;
 
-      if (sym->datatype != src_temp->datatype)
-      {
-        // Want the type of the intermediate casting variable to be the same as the left-hand-side.
-        temp = make_temp (symtab, sym->datatype);
-        // TASK: Complete the four TBD_ARG in both calls to itab_instruction_add.
-        if (sym->datatype == DTYPE_INT)
-          itab_instruction_add (itab, OP_CAST_FLOAT2INT, TBD_ARG, UNUSED_ARG, TBD_ARG);
-        else
-          itab_instruction_add (itab, OP_CAST_INT2FLOAT, TBD_ARG, UNUSED_ARG, TBD_ARG);
+  if (sym->datatype != src_temp->datatype)
+  {
+    temp = make_temp (symtab, sym->datatype);
+    if (sym->datatype == DTYPE_INT)
+      itab_instruction_add (itab, OP_CAST_FLOAT2INT, temp->addr, src_temp->addr, UNUSED_ARG);
+    else 
+      itab_instruction_add (itab, OP_CAST_INT2FLOAT, temp->addr, src_temp->addr, UNUSED_ARG);
 
-        // Final store to the array will use the intermediate variable resulting from the cast.
-        src_temp = temp;
-      }
+   
+    src_temp = temp;
+  }
 
+  if ($2 != NULL) 
+  {
+    int opcode;
+    if (src_temp->datatype == DTYPE_INT)
+      opcode = OP_STORE_ARRAY_VAL_INT;
+    else if (src_temp->datatype == DTYPE_FLOAT)
+      opcode = OP_STORE_ARRAY_VAL_FLOAT;
+    else
+      assert (0 && "Unknown array type given.");
+    itab_instruction_add (itab, opcode, sym->addr, $2->addr, src_temp->addr);
+  }
+  else
+  {
+    itab_instruction_add (itab, OP_STORE, sym->addr, sym->datatype, src_temp->addr);
+  }
+  $$ = src_temp;
+}
 
-      if ( $2 != NULL) 
-      {
-        int opcode;
-        // Decide the operation code for loading the array entry into the temporary variable.
-        if (src_temp->datatype == DTYPE_INT)
-          opcode = OP_STORE_ARRAY_VAL_INT;
-        else if (src_temp->datatype == DTYPE_FLOAT)
-          opcode = OP_STORE_ARRAY_VAL_FLOAT;
-        else
-          assert (0 && "Unknown array type given.");
-        // Decide: the target address (first argument after opcode, 
-        // the base address of the array to load from (second argument after opcode,
-        // and the offset address (the index) to the array (third argument after opcode).
-
-        // TASK: Complete the two TBD_ARG in the following call to itab_instruction_add.
-        // HINT: See the code corresponding to OP_LOAD_ARRAY_VAL_*
-        itab_instruction_add (itab, opcode, TBD_ARG, $2->addr, TBD_ARG);
-      }
-      else
-      {
-        // This is what we were doing previously in assignment 3.
-        itab_instruction_add (itab, OP_STORE, sym->addr, sym->datatype, src_temp->addr);
-      }
-      $$ = src_temp;
-    }
-    ;
 
 declaration: datatype T_ID array_size { 
       assert (symtab);
