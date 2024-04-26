@@ -150,7 +150,7 @@ construct_repeat:
     {
       // First semantic action
       // TODO: store in the stack the entry number of the next instruction to be generated (use @$.begin.line instead of $$)
-      @$.begin.line = DEFINE_ME;
+      @$.begin.line = INSTRUCTION_NEXT;
     }
     stmt_list 
     T_UNTIL 
@@ -161,10 +161,10 @@ construct_repeat:
       // Second semantic action.
       // TODO: Retrieve the value stored in the stack in the first semantic action
       // above (the second symbol)
-      int jump_dst = DEFINE_ME;
+      int jump_dst = @2.begin.line;
       // TODO: Generate a jump-if-zero (OP_JZ) to the address stored in the first semantic
       // action of this rule
-      itab_instruction_add (itab, OP_JZ, DEFINE_ME, NOARG, jump_dst);
+      itab_instruction_add (itab, OP_JZ, NOARG, NOARG, jump_dst);
     }
     ;
 
