@@ -164,7 +164,7 @@ construct_repeat:
       int jump_dst = @2.begin.line;
       // TODO: Generate a jump-if-zero (OP_JZ) to the address stored in the first semantic
       // action of this rule
-      itab_instruction_add (itab, OP_JZ, NOARG, NOARG, jump_dst);
+      itab_instruction_add (itab, OP_JZ, $6 -> addr, NOARG, jump_dst);
     }
     ;
 
@@ -172,35 +172,34 @@ construct_if :
     T_IF T_LPAR l_expr T_RPAR
     {
         // First semantic action: generate jump to skip 'then' block if condition is false
-        itab_instruction_add(itab, OP_JZ, $3->addr, UNUSED_ARG, TBD_ARG); // Address to be fixed
+        itab_instruction_add(itab, OP_JZ, $3->addr, NOARG, TBD_ARG); // Address to be fixed
         @$.begin.line = INSTRUCTION_LAST;
     }
     stmt
     {
         // Second semantic action: unconditional jump to skip 'else'
         itab_instruction_add(itab, OP_JMP, NOARG, NOARG, TBD_ARG); // Address to be fixed
-        @6.begin.line = INSTRUCTION_NEXT;  // Capture this instruction's index for later
+        @$.begin.line = INSTRUCTION_NEXT;  // Capture this instruction's index for later
 
         // Set the jump destination for the conditional jump at the start of 'then'
-        itab->tab[@3.begin.line]->addr3 = INSTRUCTION_NEXT;
+        itab->tab[@5.begin.line]->addr3 = INSTRUCTION_NEXT;
     }
     construct_else
     {
         // Third semantic action: Set target for unconditional jump
-        itab->tab[@6.begin.line]->addr3 = INSTRUCTION_NEXT;
+        itab->tab[@7.begin.line]->addr3 = INSTRUCTION_NEXT;
     }
     ;
 
 construct_else :
-    T_ELSE stmt
+    T_ELSE 
     {
         // Simply start else block, setting up location context for final jump address
         @$.begin.line = INSTRUCTION_NEXT;
     }
+    stmt
     | // Empty else or no else at all
-    {
-        @$.begin.line = INSTRUCTION_NEXT;
-    }
+
     ;
 
 
