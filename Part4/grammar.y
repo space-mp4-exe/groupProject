@@ -162,6 +162,7 @@ construct_repeat:
       // TODO: Retrieve the value stored in the stack in the first semantic action
       // above (the second symbol)
       int jump_dst = @2.begin.line;
+      itab_instruction_add (itab, OP_JZ, NOARG, NOARG, jump_dst);
       // TODO: Generate a jump-if-zero (OP_JZ) to the address stored in the first semantic
       // action of this rule
       itab_instruction_add (itab, OP_JZ, $6 -> addr, NOARG, jump_dst);

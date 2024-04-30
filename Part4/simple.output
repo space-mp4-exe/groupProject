@@ -43,83 +43,81 @@ Grammar
 
    20 construct_if: T_IF T_LPAR l_expr T_RPAR $@4 stmt $@5 construct_else
 
-   21 $@6: ε
+   21 construct_else: T_ELSE stmt
+   22               | ε
 
-   22 construct_else: T_ELSE $@6 stmt
-   23               | ε
+   23 l_expr: a_expr op_rel a_expr
 
-   24 l_expr: a_expr op_rel a_expr
+   24 op_rel: T_LT
+   25       | T_GT
+   26       | T_LEQ
+   27       | T_GEQ
 
-   25 op_rel: T_LT
-   26       | T_GT
-   27       | T_LEQ
-   28       | T_GEQ
+   28 assignment: T_ID arr_index T_ASSIGN a_expr
 
-   29 assignment: T_ID arr_index T_ASSIGN a_expr
+   29 declaration: datatype T_ID array_size
 
-   30 declaration: datatype T_ID array_size
+   30 array_size: T_LS_BRACKET T_INTEGER T_RS_BRACKET
+   31           | ε
 
-   31 array_size: T_LS_BRACKET T_INTEGER T_RS_BRACKET
-   32           | ε
+   32 datatype: T_DT_INT
+   33         | T_DT_FLOAT
 
-   33 datatype: T_DT_INT
-   34         | T_DT_FLOAT
+   34 a_expr: a_expr T_ADD a_term
+   35       | a_expr T_SUB a_term
+   36       | a_term
 
-   35 a_expr: a_expr T_ADD a_term
-   36       | a_expr T_SUB a_term
-   37       | a_term
+   37 a_term: a_term T_MUL a_fact
+   38       | a_term T_DIV a_fact
+   39       | a_fact
 
-   38 a_term: a_term T_MUL a_fact
-   39       | a_term T_DIV a_fact
-   40       | a_fact
+   40 a_fact: varref
+   41       | T_INTEGER
+   42       | T_FLOAT
+   43       | '(' a_expr ')'
+   44       | T_SUB a_fact
+   45       | T_LITERAL_STR
 
-   41 a_fact: varref
-   42       | T_INTEGER
-   43       | T_FLOAT
-   44       | '(' a_expr ')'
-   45       | T_SUB a_fact
-   46       | T_LITERAL_STR
+   46 varref: T_ID arr_index
 
-   47 varref: T_ID arr_index
+   47 arr_index: T_LS_BRACKET a_expr T_RS_BRACKET
+   48          | ε
 
-   48 arr_index: T_LS_BRACKET a_expr T_RS_BRACKET
-   49          | ε
+   49 read: T_READ varlist
 
-   50 read: T_READ varlist
+   50 write: T_WRITE expr_list
 
-   51 write: T_WRITE expr_list
+   51 varlist: varlist T_COMMA varref
+   52        | varref
 
-   52 varlist: varlist T_COMMA varref
-   53        | varref
-
-   54 expr_list: expr_list T_COMMA a_expr
-   55          | a_expr
+   53 expr_list: expr_list T_COMMA a_expr
+   54          | a_expr
 
 
 Terminals, with rules where they appear
 
     T_EOF (0) 0
-    '(' (40) 44
-    ')' (41) 44
+    '(' (40) 43
+    ')' (41) 43
     error (256)
     T_NUM (258)
-    T_ASSIGN (259) 29
-    T_ADD (260) 35
-    T_SUB (261) 36 45
-    T_MUL (262) 38
-    T_DIV (263) 39
-    T_DT_INT (264) 33
-    T_DT_FLOAT (265) 34
-    T_LITERAL_STR (266) 46
-    T_READ (267) 50
-    T_WRITE (268) 51
+    T_ASSIGN (259) 28
+    T_ADD (260) 34
+    T_SUB (261) 35 44
+    T_MUL (262) 37
+    T_DIV (263) 38
+    T_DT_INT (264) 32
+    T_DT_FLOAT (265) 33
+    T_LITERAL_STR (266) 45
+    T_READ (267) 49
+    T_WRITE (268) 50
     T_SEMICOLON (269) 1 2
-    T_COMMA (270) 52 54
-    T_LS_BRACKET (271) 31 48
-    T_RS_BRACKET (272) 31 48
-    T_ID <string> (273) 29 30 47
-    T_INTEGER <int> (274) 31 42
-    T_FLOAT <float> (275) 43
+    T_COMMA (270) 51 53
+    T_LS_BRACKET (271) 30 47
+    T_RS_BRACKET (272) 30 47
+    T_ID <string> (273) 28 29 46
+    T_INTEGER <int> (274) 30 41
+    T_FLOAT <float> (275) 42
     T_BEGIN (276) 12
     T_END (277) 12
     T_REPEAT (278) 17
@@ -128,13 +126,13 @@ Terminals, with rules where they appear
     T_WHILE (281) 15
     T_IF (282) 20
     T_THEN (283)
-    T_ELSE (284) 22
+    T_ELSE (284) 21
     T_LPAR (285) 15 17 20
     T_RPAR (286) 15 17 20
-    T_LT (287) 25
-    T_GT (288) 26
-    T_LEQ (289) 27
-    T_GEQ (290) 28
+    T_LT (287) 24
+    T_GT (288) 25
+    T_LEQ (289) 26
+    T_GEQ (290) 27
 
 
 Nonterminals, with rules where they appear
@@ -149,7 +147,7 @@ Nonterminals, with rules where they appear
         on right: 1 2 12 17
     stmt (41)
         on left: 4 5 6 7 8 9 10 11
-        on right: 2 3 15 20 22
+        on right: 2 3 15 20 21
     block (42)
         on left: 12
         on right: 11
@@ -178,56 +176,53 @@ Nonterminals, with rules where they appear
         on left: 19
         on right: 20
     construct_else (51)
-        on left: 22 23
+        on left: 21 22
         on right: 20
-    $@6 (52)
-        on left: 21
-        on right: 22
-    l_expr <symbol_t*> (53)
-        on left: 24
+    l_expr <symbol_t*> (52)
+        on left: 23
         on right: 15 17 20
-    op_rel <int> (54)
-        on left: 25 26 27 28
-        on right: 24
-    assignment <symbol_t*> (55)
-        on left: 29
+    op_rel <int> (53)
+        on left: 24 25 26 27
+        on right: 23
+    assignment <symbol_t*> (54)
+        on left: 28
         on right: 4
-    declaration <int> (56)
-        on left: 30
+    declaration <int> (55)
+        on left: 29
         on right: 7
-    array_size <int> (57)
-        on left: 31 32
-        on right: 30
-    datatype <int> (58)
-        on left: 33 34
-        on right: 30
-    a_expr <symbol_t*> (59)
-        on left: 35 36 37
-        on right: 24 29 35 36 44 48 54 55
-    a_term <symbol_t*> (60)
-        on left: 38 39 40
-        on right: 35 36 37 38 39
-    a_fact <symbol_t*> (61)
-        on left: 41 42 43 44 45 46
-        on right: 38 39 40 45
-    varref <symbol_t*> (62)
-        on left: 47
-        on right: 41 52 53
-    arr_index <symbol_t*> (63)
-        on left: 48 49
-        on right: 29 47
-    read (64)
-        on left: 50
+    array_size <int> (56)
+        on left: 30 31
+        on right: 29
+    datatype <int> (57)
+        on left: 32 33
+        on right: 29
+    a_expr <symbol_t*> (58)
+        on left: 34 35 36
+        on right: 23 28 34 35 43 47 53 54
+    a_term <symbol_t*> (59)
+        on left: 37 38 39
+        on right: 34 35 36 37 38
+    a_fact <symbol_t*> (60)
+        on left: 40 41 42 43 44 45
+        on right: 37 38 39 44
+    varref <symbol_t*> (61)
+        on left: 46
+        on right: 40 51 52
+    arr_index <symbol_t*> (62)
+        on left: 47 48
+        on right: 28 46
+    read (63)
+        on left: 49
         on right: 5
-    write (65)
-        on left: 51
+    write (64)
+        on left: 50
         on right: 6
-    varlist <vector<symbol_t*> > (66)
-        on left: 52 53
-        on right: 50 52
-    expr_list <vector<symbol_t*> > (67)
-        on left: 54 55
-        on right: 51 54
+    varlist <vector<symbol_t*> > (65)
+        on left: 51 52
+        on right: 49 51
+    expr_list <vector<symbol_t*> > (66)
+        on left: 53 54
+        on right: 50 53
 
 
 State 0
@@ -260,21 +255,21 @@ State 0
 
 State 1
 
-   33 datatype: T_DT_INT •
+   32 datatype: T_DT_INT •
 
-    $default  reduce using rule 33 (datatype)
+    $default  reduce using rule 32 (datatype)
 
 
 State 2
 
-   34 datatype: T_DT_FLOAT •
+   33 datatype: T_DT_FLOAT •
 
-    $default  reduce using rule 34 (datatype)
+    $default  reduce using rule 33 (datatype)
 
 
 State 3
 
-   50 read: T_READ • varlist
+   49 read: T_READ • varlist
 
     T_ID  shift, and go to state 22
 
@@ -284,7 +279,7 @@ State 3
 
 State 4
 
-   51 write: T_WRITE • expr_list
+   50 write: T_WRITE • expr_list
 
     T_SUB          shift, and go to state 25
     T_LITERAL_STR  shift, and go to state 26
@@ -302,11 +297,11 @@ State 4
 
 State 5
 
-   29 assignment: T_ID • arr_index T_ASSIGN a_expr
+   28 assignment: T_ID • arr_index T_ASSIGN a_expr
 
     T_LS_BRACKET  shift, and go to state 35
 
-    $default  reduce using rule 49 (arr_index)
+    $default  reduce using rule 48 (arr_index)
 
     arr_index  go to state 36
 
@@ -429,7 +424,7 @@ State 18
 
 State 19
 
-   30 declaration: datatype • T_ID array_size
+   29 declaration: datatype • T_ID array_size
 
     T_ID  shift, and go to state 43
 
@@ -450,35 +445,35 @@ State 21
 
 State 22
 
-   47 varref: T_ID • arr_index
+   46 varref: T_ID • arr_index
 
     T_LS_BRACKET  shift, and go to state 35
 
-    $default  reduce using rule 49 (arr_index)
+    $default  reduce using rule 48 (arr_index)
 
     arr_index  go to state 44
 
 
 State 23
 
-   53 varlist: varref •
+   52 varlist: varref •
 
-    $default  reduce using rule 53 (varlist)
+    $default  reduce using rule 52 (varlist)
 
 
 State 24
 
-   50 read: T_READ varlist •
-   52 varlist: varlist • T_COMMA varref
+   49 read: T_READ varlist •
+   51 varlist: varlist • T_COMMA varref
 
     T_COMMA  shift, and go to state 45
 
-    $default  reduce using rule 50 (read)
+    $default  reduce using rule 49 (read)
 
 
 State 25
 
-   45 a_fact: T_SUB • a_fact
+   44 a_fact: T_SUB • a_fact
 
     T_SUB          shift, and go to state 25
     T_LITERAL_STR  shift, and go to state 26
@@ -493,28 +488,28 @@ State 25
 
 State 26
 
-   46 a_fact: T_LITERAL_STR •
+   45 a_fact: T_LITERAL_STR •
 
-    $default  reduce using rule 46 (a_fact)
+    $default  reduce using rule 45 (a_fact)
 
 
 State 27
 
-   42 a_fact: T_INTEGER •
+   41 a_fact: T_INTEGER •
 
-    $default  reduce using rule 42 (a_fact)
+    $default  reduce using rule 41 (a_fact)
 
 
 State 28
 
-   43 a_fact: T_FLOAT •
+   42 a_fact: T_FLOAT •
 
-    $default  reduce using rule 43 (a_fact)
+    $default  reduce using rule 42 (a_fact)
 
 
 State 29
 
-   44 a_fact: '(' • a_expr ')'
+   43 a_fact: '(' • a_expr ')'
 
     T_SUB          shift, and go to state 25
     T_LITERAL_STR  shift, and go to state 26
@@ -531,55 +526,55 @@ State 29
 
 State 30
 
-   35 a_expr: a_expr • T_ADD a_term
-   36       | a_expr • T_SUB a_term
-   55 expr_list: a_expr •
+   34 a_expr: a_expr • T_ADD a_term
+   35       | a_expr • T_SUB a_term
+   54 expr_list: a_expr •
 
     T_ADD  shift, and go to state 48
     T_SUB  shift, and go to state 49
 
-    $default  reduce using rule 55 (expr_list)
+    $default  reduce using rule 54 (expr_list)
 
 
 State 31
 
-   37 a_expr: a_term •
-   38 a_term: a_term • T_MUL a_fact
-   39       | a_term • T_DIV a_fact
+   36 a_expr: a_term •
+   37 a_term: a_term • T_MUL a_fact
+   38       | a_term • T_DIV a_fact
 
     T_MUL  shift, and go to state 50
     T_DIV  shift, and go to state 51
 
-    $default  reduce using rule 37 (a_expr)
+    $default  reduce using rule 36 (a_expr)
 
 
 State 32
 
-   40 a_term: a_fact •
+   39 a_term: a_fact •
 
-    $default  reduce using rule 40 (a_term)
+    $default  reduce using rule 39 (a_term)
 
 
 State 33
 
-   41 a_fact: varref •
+   40 a_fact: varref •
 
-    $default  reduce using rule 41 (a_fact)
+    $default  reduce using rule 40 (a_fact)
 
 
 State 34
 
-   51 write: T_WRITE expr_list •
-   54 expr_list: expr_list • T_COMMA a_expr
+   50 write: T_WRITE expr_list •
+   53 expr_list: expr_list • T_COMMA a_expr
 
     T_COMMA  shift, and go to state 52
 
-    $default  reduce using rule 51 (write)
+    $default  reduce using rule 50 (write)
 
 
 State 35
 
-   48 arr_index: T_LS_BRACKET • a_expr T_RS_BRACKET
+   47 arr_index: T_LS_BRACKET • a_expr T_RS_BRACKET
 
     T_SUB          shift, and go to state 25
     T_LITERAL_STR  shift, and go to state 26
@@ -596,7 +591,7 @@ State 35
 
 State 36
 
-   29 assignment: T_ID arr_index • T_ASSIGN a_expr
+   28 assignment: T_ID arr_index • T_ASSIGN a_expr
 
     T_ASSIGN  shift, and go to state 54
 
@@ -700,25 +695,25 @@ State 42
 
 State 43
 
-   30 declaration: datatype T_ID • array_size
+   29 declaration: datatype T_ID • array_size
 
     T_LS_BRACKET  shift, and go to state 62
 
-    $default  reduce using rule 32 (array_size)
+    $default  reduce using rule 31 (array_size)
 
     array_size  go to state 63
 
 
 State 44
 
-   47 varref: T_ID arr_index •
+   46 varref: T_ID arr_index •
 
-    $default  reduce using rule 47 (varref)
+    $default  reduce using rule 46 (varref)
 
 
 State 45
 
-   52 varlist: varlist T_COMMA • varref
+   51 varlist: varlist T_COMMA • varref
 
     T_ID  shift, and go to state 22
 
@@ -727,16 +722,16 @@ State 45
 
 State 46
 
-   45 a_fact: T_SUB a_fact •
+   44 a_fact: T_SUB a_fact •
 
-    $default  reduce using rule 45 (a_fact)
+    $default  reduce using rule 44 (a_fact)
 
 
 State 47
 
-   35 a_expr: a_expr • T_ADD a_term
-   36       | a_expr • T_SUB a_term
-   44 a_fact: '(' a_expr • ')'
+   34 a_expr: a_expr • T_ADD a_term
+   35       | a_expr • T_SUB a_term
+   43 a_fact: '(' a_expr • ')'
 
     T_ADD  shift, and go to state 48
     T_SUB  shift, and go to state 49
@@ -745,7 +740,7 @@ State 47
 
 State 48
 
-   35 a_expr: a_expr T_ADD • a_term
+   34 a_expr: a_expr T_ADD • a_term
 
     T_SUB          shift, and go to state 25
     T_LITERAL_STR  shift, and go to state 26
@@ -761,7 +756,7 @@ State 48
 
 State 49
 
-   36 a_expr: a_expr T_SUB • a_term
+   35 a_expr: a_expr T_SUB • a_term
 
     T_SUB          shift, and go to state 25
     T_LITERAL_STR  shift, and go to state 26
@@ -777,7 +772,7 @@ State 49
 
 State 50
 
-   38 a_term: a_term T_MUL • a_fact
+   37 a_term: a_term T_MUL • a_fact
 
     T_SUB          shift, and go to state 25
     T_LITERAL_STR  shift, and go to state 26
@@ -792,7 +787,7 @@ State 50
 
 State 51
 
-   39 a_term: a_term T_DIV • a_fact
+   38 a_term: a_term T_DIV • a_fact
 
     T_SUB          shift, and go to state 25
     T_LITERAL_STR  shift, and go to state 26
@@ -807,7 +802,7 @@ State 51
 
 State 52
 
-   54 expr_list: expr_list T_COMMA • a_expr
+   53 expr_list: expr_list T_COMMA • a_expr
 
     T_SUB          shift, and go to state 25
     T_LITERAL_STR  shift, and go to state 26
@@ -824,9 +819,9 @@ State 52
 
 State 53
 
-   35 a_expr: a_expr • T_ADD a_term
-   36       | a_expr • T_SUB a_term
-   48 arr_index: T_LS_BRACKET a_expr • T_RS_BRACKET
+   34 a_expr: a_expr • T_ADD a_term
+   35       | a_expr • T_SUB a_term
+   47 arr_index: T_LS_BRACKET a_expr • T_RS_BRACKET
 
     T_ADD         shift, and go to state 48
     T_SUB         shift, and go to state 49
@@ -835,7 +830,7 @@ State 53
 
 State 54
 
-   29 assignment: T_ID arr_index T_ASSIGN • a_expr
+   28 assignment: T_ID arr_index T_ASSIGN • a_expr
 
     T_SUB          shift, and go to state 25
     T_LITERAL_STR  shift, and go to state 26
@@ -919,9 +914,9 @@ State 59
 
 State 60
 
-   24 l_expr: a_expr • op_rel a_expr
-   35 a_expr: a_expr • T_ADD a_term
-   36       | a_expr • T_SUB a_term
+   23 l_expr: a_expr • op_rel a_expr
+   34 a_expr: a_expr • T_ADD a_term
+   35       | a_expr • T_SUB a_term
 
     T_ADD  shift, and go to state 48
     T_SUB  shift, and go to state 49
@@ -942,37 +937,49 @@ State 61
 
 State 62
 
-   31 array_size: T_LS_BRACKET • T_INTEGER T_RS_BRACKET
+   30 array_size: T_LS_BRACKET • T_INTEGER T_RS_BRACKET
 
     T_INTEGER  shift, and go to state 81
 
 
 State 63
 
-   30 declaration: datatype T_ID array_size •
+   29 declaration: datatype T_ID array_size •
 
-    $default  reduce using rule 30 (declaration)
+    $default  reduce using rule 29 (declaration)
 
 
 State 64
 
-   52 varlist: varlist T_COMMA varref •
+   51 varlist: varlist T_COMMA varref •
 
-    $default  reduce using rule 52 (varlist)
+    $default  reduce using rule 51 (varlist)
 
 
 State 65
 
-   44 a_fact: '(' a_expr ')' •
+   43 a_fact: '(' a_expr ')' •
 
-    $default  reduce using rule 44 (a_fact)
+    $default  reduce using rule 43 (a_fact)
 
 
 State 66
 
-   35 a_expr: a_expr T_ADD a_term •
-   38 a_term: a_term • T_MUL a_fact
-   39       | a_term • T_DIV a_fact
+   34 a_expr: a_expr T_ADD a_term •
+   37 a_term: a_term • T_MUL a_fact
+   38       | a_term • T_DIV a_fact
+
+    T_MUL  shift, and go to state 50
+    T_DIV  shift, and go to state 51
+
+    $default  reduce using rule 34 (a_expr)
+
+
+State 67
+
+   35 a_expr: a_expr T_SUB a_term •
+   37 a_term: a_term • T_MUL a_fact
+   38       | a_term • T_DIV a_fact
 
     T_MUL  shift, and go to state 50
     T_DIV  shift, and go to state 51
@@ -980,61 +987,49 @@ State 66
     $default  reduce using rule 35 (a_expr)
 
 
-State 67
-
-   36 a_expr: a_expr T_SUB a_term •
-   38 a_term: a_term • T_MUL a_fact
-   39       | a_term • T_DIV a_fact
-
-    T_MUL  shift, and go to state 50
-    T_DIV  shift, and go to state 51
-
-    $default  reduce using rule 36 (a_expr)
-
-
 State 68
 
-   38 a_term: a_term T_MUL a_fact •
+   37 a_term: a_term T_MUL a_fact •
 
-    $default  reduce using rule 38 (a_term)
+    $default  reduce using rule 37 (a_term)
 
 
 State 69
 
-   39 a_term: a_term T_DIV a_fact •
+   38 a_term: a_term T_DIV a_fact •
 
-    $default  reduce using rule 39 (a_term)
+    $default  reduce using rule 38 (a_term)
 
 
 State 70
 
-   35 a_expr: a_expr • T_ADD a_term
-   36       | a_expr • T_SUB a_term
-   54 expr_list: expr_list T_COMMA a_expr •
+   34 a_expr: a_expr • T_ADD a_term
+   35       | a_expr • T_SUB a_term
+   53 expr_list: expr_list T_COMMA a_expr •
 
     T_ADD  shift, and go to state 48
     T_SUB  shift, and go to state 49
 
-    $default  reduce using rule 54 (expr_list)
+    $default  reduce using rule 53 (expr_list)
 
 
 State 71
 
-   48 arr_index: T_LS_BRACKET a_expr T_RS_BRACKET •
+   47 arr_index: T_LS_BRACKET a_expr T_RS_BRACKET •
 
-    $default  reduce using rule 48 (arr_index)
+    $default  reduce using rule 47 (arr_index)
 
 
 State 72
 
-   29 assignment: T_ID arr_index T_ASSIGN a_expr •
-   35 a_expr: a_expr • T_ADD a_term
-   36       | a_expr • T_SUB a_term
+   28 assignment: T_ID arr_index T_ASSIGN a_expr •
+   34 a_expr: a_expr • T_ADD a_term
+   35       | a_expr • T_SUB a_term
 
     T_ADD  shift, and go to state 48
     T_SUB  shift, and go to state 49
 
-    $default  reduce using rule 29 (assignment)
+    $default  reduce using rule 28 (assignment)
 
 
 State 73
@@ -1062,35 +1057,35 @@ State 75
 
 State 76
 
-   25 op_rel: T_LT •
+   24 op_rel: T_LT •
 
-    $default  reduce using rule 25 (op_rel)
+    $default  reduce using rule 24 (op_rel)
 
 
 State 77
 
-   26 op_rel: T_GT •
+   25 op_rel: T_GT •
 
-    $default  reduce using rule 26 (op_rel)
+    $default  reduce using rule 25 (op_rel)
 
 
 State 78
 
-   27 op_rel: T_LEQ •
+   26 op_rel: T_LEQ •
 
-    $default  reduce using rule 27 (op_rel)
+    $default  reduce using rule 26 (op_rel)
 
 
 State 79
 
-   28 op_rel: T_GEQ •
+   27 op_rel: T_GEQ •
 
-    $default  reduce using rule 28 (op_rel)
+    $default  reduce using rule 27 (op_rel)
 
 
 State 80
 
-   24 l_expr: a_expr op_rel • a_expr
+   23 l_expr: a_expr op_rel • a_expr
 
     T_SUB          shift, and go to state 25
     T_LITERAL_STR  shift, and go to state 26
@@ -1107,7 +1102,7 @@ State 80
 
 State 81
 
-   31 array_size: T_LS_BRACKET T_INTEGER • T_RS_BRACKET
+   30 array_size: T_LS_BRACKET T_INTEGER • T_RS_BRACKET
 
     T_RS_BRACKET  shift, and go to state 86
 
@@ -1167,21 +1162,21 @@ State 84
 
 State 85
 
-   24 l_expr: a_expr op_rel a_expr •
-   35 a_expr: a_expr • T_ADD a_term
-   36       | a_expr • T_SUB a_term
+   23 l_expr: a_expr op_rel a_expr •
+   34 a_expr: a_expr • T_ADD a_term
+   35       | a_expr • T_SUB a_term
 
     T_ADD  shift, and go to state 48
     T_SUB  shift, and go to state 49
 
-    $default  reduce using rule 24 (l_expr)
+    $default  reduce using rule 23 (l_expr)
 
 
 State 86
 
-   31 array_size: T_LS_BRACKET T_INTEGER T_RS_BRACKET •
+   30 array_size: T_LS_BRACKET T_INTEGER T_RS_BRACKET •
 
-    $default  reduce using rule 31 (array_size)
+    $default  reduce using rule 30 (array_size)
 
 
 State 87
@@ -1246,8 +1241,8 @@ State 92
 
     T_ELSE  shift, and go to state 94
 
-    T_ELSE    [reduce using rule 23 (construct_else)]
-    $default  reduce using rule 23 (construct_else)
+    T_ELSE    [reduce using rule 22 (construct_else)]
+    $default  reduce using rule 22 (construct_else)
 
     construct_else  go to state 95
 
@@ -1261,23 +1256,7 @@ State 93
 
 State 94
 
-   22 construct_else: T_ELSE • $@6 stmt
-
-    $default  reduce using rule 21 ($@6)
-
-    $@6  go to state 96
-
-
-State 95
-
-   20 construct_if: T_IF T_LPAR l_expr T_RPAR $@4 stmt $@5 construct_else •
-
-    $default  reduce using rule 20 (construct_if)
-
-
-State 96
-
-   22 construct_else: T_ELSE $@6 • stmt
+   21 construct_else: T_ELSE • stmt
 
     T_DT_INT    shift, and go to state 1
     T_DT_FLOAT  shift, and go to state 2
@@ -1289,7 +1268,7 @@ State 96
     T_WHILE     shift, and go to state 8
     T_IF        shift, and go to state 9
 
-    stmt              go to state 97
+    stmt              go to state 96
     block             go to state 13
     construct_while   go to state 14
     construct_repeat  go to state 15
@@ -1301,8 +1280,15 @@ State 96
     write             go to state 21
 
 
-State 97
+State 95
 
-   22 construct_else: T_ELSE $@6 stmt •
+   20 construct_if: T_IF T_LPAR l_expr T_RPAR $@4 stmt $@5 construct_else •
 
-    $default  reduce using rule 22 (construct_else)
+    $default  reduce using rule 20 (construct_if)
+
+
+State 96
+
+   21 construct_else: T_ELSE stmt •
+
+    $default  reduce using rule 21 (construct_else)
