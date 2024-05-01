@@ -162,7 +162,6 @@ construct_repeat:
       // TODO: Retrieve the value stored in the stack in the first semantic action
       // above (the second symbol)
       int jump_dst = @2.begin.line;
-      itab_instruction_add (itab, OP_JZ, NOARG, NOARG, jump_dst);
       // TODO: Generate a jump-if-zero (OP_JZ) to the address stored in the first semantic
       // action of this rule
       itab_instruction_add (itab, OP_JZ, $6 -> addr, NOARG, jump_dst);
@@ -233,9 +232,9 @@ assignment : T_ID arr_index T_ASSIGN a_expr
   {
     temp = make_temp (symtab, sym->datatype);
     if (sym->datatype == DTYPE_INT)
-      itab_instruction_add (itab, OP_CAST_FLOAT2INT, temp->addr, src_temp->addr, UNUSED_ARG);
-    else 
-      itab_instruction_add (itab, OP_CAST_INT2FLOAT, temp->addr, src_temp->addr, UNUSED_ARG);
+        itab_instruction_add (itab, OP_CAST_FLOAT2INT, sym->addr, UNUSED_ARG, src_temp -> addr);
+    else
+        itab_instruction_add (itab, OP_CAST_INT2FLOAT, sym->addr, UNUSED_ARG, src_temp -> addr);
 
    
     src_temp = temp;
