@@ -232,9 +232,9 @@ assignment : T_ID arr_index T_ASSIGN a_expr
   {
     temp = make_temp (symtab, sym->datatype);
     if (sym->datatype == DTYPE_INT)
-        itab_instruction_add (itab, OP_CAST_FLOAT2INT, sym->addr, UNUSED_ARG, src_temp -> addr);
+        itab_instruction_add (itab, OP_CAST_FLOAT2INT, sym->addr, UNUSED_ARG, src_temp->addr);
     else
-        itab_instruction_add (itab, OP_CAST_INT2FLOAT, sym->addr, UNUSED_ARG, src_temp -> addr);
+        itab_instruction_add (itab, OP_CAST_INT2FLOAT, sym->addr, UNUSED_ARG, src_temp->addr);
 
    
     src_temp = temp;
