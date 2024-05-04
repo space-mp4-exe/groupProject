@@ -164,7 +164,7 @@ construct_repeat:
       int jump_dst = @2.begin.line;
       // TODO: Generate a jump-if-zero (OP_JZ) to the address stored in the first semantic
       // action of this rule
-      itab_instruction_add (itab, OP_JZ, $6->addr, NOARG, jump_dst);
+      itab_instruction_add (itab, OP_JZ, $6 -> addr, NOARG, jump_dst);
     }
     ;
 
@@ -172,41 +172,41 @@ construct_if :
     T_IF 
     T_LPAR 
     l_expr 
-    T_RPAR 
+    T_RPAR
     {
-      // First semantic action
-      // DEFINE_ME = change to proper values.
-      // TBDARG = Should modify the corresponding address (.addr#) in a later semantic action.
-      // NOARG = No need to change.
-      itab_instruction_add (itab, OP_JZ, $3->addr, NOARG, TBDARG);
-      @$.begin.line = INSTRUCTION_LAST; // INSTRUCTION_NEXT or INSTRUCTION_LAST
+        // First semantic action: generate jump to skip 'then' block if condition is false
+        itab_instruction_add(itab, OP_JZ, $3->addr, NOARG, TBD_ARG); // Address to be fixed
+        @$.begin.line = INSTRUCTION_LAST;
     }
-    stmt 
+    stmt
     {
-      // Second semantic action
-      itab_instruction_add (itab, OP_JMP, NOARG, NOARG, TBDARG);
-      @$.begin.line =  INSTRUCTION_LAST; // INSTRUCTION_NEXT or INSTRUCTION_LAST
+        // Second semantic action: unconditional jump to skip 'else'
+        itab_instruction_add(itab, OP_JMP, NOARG, NOARG, TBD_ARG); // Address to be fixed
+        @$.begin.line = INSTRUCTION_NEXT;  // Capture this instruction's index for later
 
-      int jmp_entry = @5.begin.line;
-      itab->tab[jmp_entry]->addr3 = INSTRUCTION_NEXT; // INSTRUCTION_NEXT or INSTRUCTION_LAST
+        // Set the jump destination for the conditional jump at the start of 'then'
+	int jump_entry = @5.begin.line;
+        itab->tab[jump_entry]->addr3 = INSTRUCTION_NEXT;
     }
     construct_else
     {
-      // Third semantic action
-      int jmp_entry = @7.begin.line;
-      itab->tab[jmp_entry]->addr3 = INSTRUCTION_NEXT; // INSTRUCTION_NEXT or INSTRUCTION_LAST
+        // Third semantic action: Set target for unconditional jump
+	int jump_entry = @7.begin.line;
+        itab->tab[jump_entry]->addr3 = INSTRUCTION_NEXT;
     }
     ;
 
 construct_else :
-      T_ELSE 
-      { 
+    T_ELSE 
+    {
+        // Simply start else block, setting up location context for final jump address
         @$.begin.line = INSTRUCTION_NEXT;
-      }
-      stmt 
-    | 
+    }
+    stmt
+    | // Empty else or no else at all
 
     ;
+
 
 
 l_expr : a_expr op_rel a_expr
@@ -226,54 +226,43 @@ op_rel  : T_LT { $$ = OP_LT; }
         ;
 
 assignment : T_ID arr_index T_ASSIGN a_expr 
-    {
-      symbol_t * sym = symbol_find (symtab, $1);
-      assert (sym && "Ooops: Did not find variable!");
+{
+  symbol_t * sym = symbol_find (symtab, $1);
+  assert (sym && "Ooops: Did not find variable!");
 
-      symbol_t * src_temp = $4;
-      symbol_t * temp = NULL;
+  symbol_t * src_temp = $4;
+  symbol_t * temp = NULL;
 
-      if (sym->datatype != src_temp->datatype)
-      {
-        // Want the type of the intermediate casting variable to be the same as the left-hand-side.
-        temp = make_temp (symtab, sym->datatype);
-        // TASK: Complete the four TBD_ARG in both calls to itab_instruction_add.
-        if (sym->datatype == DTYPE_INT)
-          itab_instruction_add (itab, OP_CAST_FLOAT2INT, sym->addr, UNUSED_ARG, src_temp -> addr);
-        else
-          itab_instruction_add (itab, OP_CAST_INT2FLOAT, temp->addr, UNUSED_ARG, src_temp -> addr);
+  if (sym->datatype != src_temp->datatype)
+  {
+    temp = make_temp (symtab, sym->datatype);
+    if (sym->datatype == DTYPE_INT)
+        itab_instruction_add (itab, OP_CAST_FLOAT2INT, sym->addr, UNUSED_ARG, src_temp->addr);
+    else
+        itab_instruction_add (itab, OP_CAST_INT2FLOAT, temp->addr, UNUSED_ARG, src_temp->addr);
 
-        // Final store to the array will use the intermediate variable resulting from the cast.
-        src_temp = temp;
-      }
+   
+    src_temp = temp;
+  }
 
+  if ($2 != NULL) 
+  {
+    int opcode;
+    if (src_temp->datatype == DTYPE_INT)
+      opcode = OP_STORE_ARRAY_VAL_INT;
+    else if (src_temp->datatype == DTYPE_FLOAT)
+      opcode = OP_STORE_ARRAY_VAL_FLOAT;
+    else
+      assert (0 && "Unknown array type given.");
+    itab_instruction_add (itab, opcode, sym->addr, $2->addr, src_temp->addr);
+  }
+  else
+  {
+    itab_instruction_add (itab, OP_STORE, sym->addr, sym->datatype, src_temp->addr);
+  }
+  $$ = src_temp;
+}
 
-      if ( $2 != NULL) 
-      {
-        int opcode;
-        // Decide the operation code for loading the array entry into the temporary variable.
-        if (src_temp->datatype == DTYPE_INT)
-          opcode = OP_STORE_ARRAY_VAL_INT;
-        else if (src_temp->datatype == DTYPE_FLOAT)
-          opcode = OP_STORE_ARRAY_VAL_FLOAT;
-        else
-          assert (0 && "Unknown array type given.");
-        // Decide: the target address (first argument after opcode, 
-        // the base address of the array to load from (second argument after opcode,
-        // and the offset address (the index) to the array (third argument after opcode).
-
-        // TASK: Complete the two TBD_ARG in the following call to itab_instruction_add.
-        // HINT: See the code corresponding to OP_LOAD_ARRAY_VAL_*
-        itab_instruction_add (itab, opcode, sym->addr, $2->addr, src_temp -> addr);
-      }
-      else
-      {
-        // This is what we were doing previously in assignment 3.
-        itab_instruction_add (itab, OP_STORE, sym->addr, sym->datatype, src_temp->addr);
-      }
-      $$ = src_temp;
-    }
-    ;
 
 declaration: datatype T_ID array_size { 
       assert (symtab);
