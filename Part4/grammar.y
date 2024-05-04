@@ -182,12 +182,14 @@ construct_if :
         @$.begin.line = INSTRUCTION_NEXT;  // Capture this instruction's index for later
 
         // Set the jump destination for the conditional jump at the start of 'then'
-        itab->tab[@5.begin.line]->addr3 = INSTRUCTION_NEXT;
+	int jump_entry = @5.begin.line;
+        itab->tab[jump_entry]->addr3 = INSTRUCTION_NEXT;
     }
     construct_else
     {
         // Third semantic action: Set target for unconditional jump
-        itab->tab[@7.begin.line]->addr3 = INSTRUCTION_NEXT;
+	int jump_entry = @7.begin.line;
+        itab->tab[jump_entry]->addr3 = INSTRUCTION_NEXT;
     }
     ;
 
@@ -234,7 +236,7 @@ assignment : T_ID arr_index T_ASSIGN a_expr
     if (sym->datatype == DTYPE_INT)
         itab_instruction_add (itab, OP_CAST_FLOAT2INT, sym->addr, UNUSED_ARG, src_temp->addr);
     else
-        itab_instruction_add (itab, OP_CAST_INT2FLOAT, sym->addr, UNUSED_ARG, src_temp->addr);
+        itab_instruction_add (itab, OP_CAST_INT2FLOAT, temp->addr, UNUSED_ARG, src_temp->addr);
 
    
     src_temp = temp;
