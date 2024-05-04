@@ -129,7 +129,7 @@ construct_while :
       // Second semantic action
       // TODO: Jump to the end of the while body if the condition 
       // evaluates to zero.
-      itab_instruction_add (itab, OP_JZ, $4->addr, UNUSED_ARG, TBD_ARG);
+      itab_instruction_add (itab, OP_JZ, $4->addr, UNUSED_ARG, TBDARG);
       @$.begin.line = INSTRUCTION_LAST;
     }
     T_DO 
@@ -175,13 +175,13 @@ construct_if :
     T_RPAR
     {
         // First semantic action: generate jump to skip 'then' block if condition is false
-        itab_instruction_add(itab, OP_JZ, $3->addr, NOARG, TBD_ARG); // Address to be fixed
+        itab_instruction_add(itab, OP_JZ, $3->addr, NOARG, TBDARG); // Address to be fixed
         @$.begin.line = INSTRUCTION_LAST;
     }
     stmt
     {
         // Second semantic action: unconditional jump to skip 'else'
-        itab_instruction_add(itab, OP_JMP, NOARG, NOARG, TBD_ARG); // Address to be fixed
+        itab_instruction_add(itab, OP_JMP, NOARG, NOARG, TBDARG); // Address to be fixed
         @$.begin.line = INSTRUCTION_NEXT;  // Capture this instruction's index for later
 
         // Set the jump destination for the conditional jump at the start of 'then'
