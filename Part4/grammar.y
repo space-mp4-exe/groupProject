@@ -182,16 +182,16 @@ construct_if :
     {
         // Second semantic action: unconditional jump to skip 'else'
         itab_instruction_add(itab, OP_JMP, NOARG, NOARG, TBDARG); // Address to be fixed
-        @$.begin.line = INSTRUCTION_NEXT;  // Capture this instruction's index for later
+        @$.begin.line = INSTRUCTION_LAST;  // Capture this instruction's index for later
 
         // Set the jump destination for the conditional jump at the start of 'then'
-	int jump_entry = @5.begin.line;
+	      int jump_entry = @5.begin.line;
         itab->tab[jump_entry]->addr3 = INSTRUCTION_NEXT;
     }
     construct_else
     {
         // Third semantic action: Set target for unconditional jump
-	int jump_entry = @7.begin.line;
+	      int jump_entry = @7.begin.line;
         itab->tab[jump_entry]->addr3 = INSTRUCTION_NEXT;
     }
     ;
